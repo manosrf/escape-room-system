@@ -1,3 +1,4 @@
+import os
 from datetime import datetime
 from pathlib import Path
 
@@ -10,7 +11,7 @@ BASE_DIR = Path(__file__).resolve().parent
 
 def create_app():
     app = Flask(__name__)
-    app.config["SECRET_KEY"] = "dev-secret-key-change-me"
+    app.config["SECRET_KEY"] = os.environ.get("SECRET_KEY", "dev-secret-key-change-me")
     app.config["SQLALCHEMY_DATABASE_URI"] = f"sqlite:///{BASE_DIR / 'escape_room.db'}"
     db.init_app(app)
 

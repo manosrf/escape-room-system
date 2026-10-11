@@ -87,3 +87,11 @@ all members added as collaborators. To set that up:
 4. Use **Issues** on GitHub as your Scrum backlog (one issue per backlog
    item), and organize them into a Project board if you want a visual
    Sprint board.
+
+## Online demo (Render)
+
+The repo includes a `render.yaml`, so it can be deployed for free on
+[Render](https://render.com): sign in with GitHub, choose **New → Blueprint**,
+and pick this repository. Render installs `lib/requirements.txt`, seeds the
+sample rooms and starts the app with gunicorn. On the free plan the app
+sleeps when idle, so the first visit can take ~30 seconds.
