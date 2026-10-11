@@ -1,0 +1,30 @@
+{% extends "base.html" %}
+{% block title %}Reserve {{ room.name }}{% endblock %}
+{% block content %}
+  <a class="back-link" href="{{ url_for('room_detail', room_id=room.id) }}">&larr; {{ room.name }}</a>
+  <h1>Reserve your spot</h1>
+  <p>
+    {{ room.name }} &mdash; {{ session.start_time.strftime('%a %d %b, %H:%M') }}
+    &middot; {{ session.available_spots }} spot(s) left
+  </p>
+
+  <form method="post" class="form">
+    <label>Team / group name
+      <input type="text" name="team_name" required>
+    </label>
+    <label>Leader's full name
+      <input type="text" name="leader_name" required>
+    </label>
+    <label>Leader's email
+      <input type="email" name="leader_email" required>
+    </label>
+    <label>Leader's phone (optional)
+      <input type="tel" name="leader_phone">
+    </label>
+    <label>Number of players
+      <input type="number" name="party_size" min="1" max="{{ session.available_spots }}"
+             value="{{ room.min_players }}" required>
+    </label>
+    <button type="submit" class="btn">Confirm reservation</button>
+  </form>
+{% endblock %}

@@ -1,0 +1,39 @@
+{% extends "base.html" %}
+{% block title %}{{ room.name }}{% endblock %}
+{% block content %}
+  <a class="back-link" href="{{ url_for('index') }}">&larr; All rooms</a>
+  <h1>{{ room.name }}</h1>
+  <p class="theme">{{ room.theme }} &middot; {{ room.difficulty }}</p>
+  <p>{{ room.description }}</p>
+  <ul class="room-meta">
+    <li>{{ room.min_players }}–{{ room.max_players }} players</li>
+    <li>{{ room.duration_minutes }} minutes</li>
+    <li>€{{ "%.2f"|format(room.price_per_person) }} / person</li>
+  </ul>
+
+  <h2>Available sessions</h2>
+  {% if not sessions %}
+    <p>No upcoming sessions for this room yet.</p>
+  {% else %}
+    <table class="sessions-table">
+      <thead>
+        <tr><th>Date &amp; time</th><th>Spots left</th><th></th></tr>
+      </thead>
+      <tbody>
+        {% for s in sessions %}
+          <tr>
+            <td>{{ s.start_time.strftime('%a %d %b, %H:%M') }}</td>
+            <td>{{ s.available_spots }} / {{ s.capacity }}</td>
+            <td>
+              {% if s.is_full %}
+                <span class="badge badge-full">Full</span>
+              {% else %}
+                <a class="btn" href="{{ url_for('reserve', session_id=s.id) }}">Reserve</a>
+              {% endif %}
+            </td>
+          </tr>
+        {% endfor %}
+      </tbody>
+    </table>
+  {% endif %}
+{% endblock %}

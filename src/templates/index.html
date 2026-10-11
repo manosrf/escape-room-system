@@ -1,0 +1,25 @@
+{% extends "base.html" %}
+{% block title %}Our Escape Rooms{% endblock %}
+{% block content %}
+  <h1>Choose your escape room</h1>
+
+  {% if not rooms %}
+    <p>No rooms yet. Go to <a href="{{ url_for('admin_index') }}">Admin</a> to add one.</p>
+  {% endif %}
+
+  <div class="room-grid">
+    {% for room in rooms %}
+      <a class="room-card" href="{{ url_for('room_detail', room_id=room.id) }}">
+        <h2>{{ room.name }}</h2>
+        <p class="theme">{{ room.theme }}</p>
+        <p>{{ room.description[:120] }}{% if room.description|length > 120 %}...{% endif %}</p>
+        <ul class="room-meta">
+          <li>{{ room.min_players }}–{{ room.max_players }} players</li>
+          <li>{{ room.duration_minutes }} min</li>
+          <li>{{ room.difficulty }}</li>
+          <li>€{{ "%.2f"|format(room.price_per_person) }} / person</li>
+        </ul>
+      </a>
+    {% endfor %}
+  </div>
+{% endblock %}

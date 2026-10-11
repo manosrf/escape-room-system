@@ -1,0 +1,28 @@
+{% extends "base.html" %}
+{% block title %}Reservation #{{ reservation.id }}{% endblock %}
+{% block content %}
+  <h1>
+    {% if reservation.status == 'confirmed' %}
+      Reservation confirmed ✅
+    {% else %}
+      Reservation cancelled ❌
+    {% endif %}
+  </h1>
+
+  <table class="details-table">
+    <tr><th>Room</th><td>{{ reservation.session.room.name }}</td></tr>
+    <tr><th>Date &amp; time</th><td>{{ reservation.session.start_time.strftime('%a %d %b, %H:%M') }}</td></tr>
+    <tr><th>Team</th><td>{{ reservation.team.name }}</td></tr>
+    <tr><th>Leader</th><td>{{ reservation.team.leader_name }} ({{ reservation.team.leader_email }})</td></tr>
+    <tr><th>Players</th><td>{{ reservation.party_size }}</td></tr>
+    <tr><th>Status</th><td>{{ reservation.status }}</td></tr>
+  </table>
+
+  {% if reservation.status == 'confirmed' %}
+    <form method="post" action="{{ url_for('cancel_reservation', reservation_id=reservation.id) }}">
+      <button type="submit" class="btn btn-danger">Cancel reservation</button>
+    </form>
+  {% endif %}
+
+  <a class="back-link" href="{{ url_for('index') }}">&larr; Back to all rooms</a>
+{% endblock %}

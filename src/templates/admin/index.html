@@ -1,0 +1,38 @@
+{% extends "base.html" %}
+{% block title %}Admin{% endblock %}
+{% block content %}
+  <h1>Admin</h1>
+  <p class="note">
+    No login here yet &mdash; authentication/authorization is planned for a
+    later sprint once the core booking flow is in place.
+  </p>
+
+  <a class="btn" href="{{ url_for('admin_new_room') }}">+ New room</a>
+
+  {% for room in rooms %}
+    <section class="admin-room">
+      <h2>{{ room.name }}</h2>
+      <p>{{ room.theme }} &middot; {{ room.min_players }}–{{ room.max_players }} players
+         &middot; {{ room.duration_minutes }} min</p>
+
+      <a class="btn btn-small" href="{{ url_for('admin_new_session', room_id=room.id) }}">
+        + Add session
+      </a>
+
+      <table class="sessions-table">
+        <thead><tr><th>Date &amp; time</th><th>Capacity</th><th>Status</th></tr></thead>
+        <tbody>
+          {% for s in room.sessions|sort(attribute='start_time') %}
+            <tr>
+              <td>{{ s.start_time.strftime('%a %d %b, %H:%M') }}</td>
+              <td>{{ s.booked_spots }} / {{ s.capacity }}</td>
+              <td>{{ s.status }}</td>
+            </tr>
+          {% else %}
+            <tr><td colspan="3">No sessions yet.</td></tr>
+          {% endfor %}
+        </tbody>
+      </table>
+    </section>
+  {% endfor %}
+{% endblock %}
